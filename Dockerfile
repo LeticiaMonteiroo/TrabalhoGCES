@@ -1,0 +1,20 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY server/package*.json ./server/
+
+WORKDIR /app/server
+
+RUN npm install
+
+WORKDIR /app
+
+COPY game ./game
+COPY server ./server
+
+EXPOSE 55555
+
+WORKDIR /app/server
+
+CMD ["node", "server.js"]
