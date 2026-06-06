@@ -1,0 +1,6 @@
+services:
+  mkjs-server:
+    build: .
+    container_name: mkjs-server
+    ports:
+      - "55555:55555"
