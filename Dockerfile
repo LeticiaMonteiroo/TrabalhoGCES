@@ -17,4 +17,4 @@ EXPOSE 55555
 
 WORKDIR /app/server
 
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]

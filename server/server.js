@@ -22,6 +22,8 @@ var Responses = {
     JOIN_GAME: 'join-game'
   };
 
+console.log("Hot reload funcionando");
+
 io.sockets.on('connection', function (socket) {
   socket.on(Requests.CREATE_GAME, function (gameName) {
     if (games.createGame(gameName)) {

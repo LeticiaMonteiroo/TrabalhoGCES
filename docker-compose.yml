@@ -4,3 +4,6 @@ services:
     container_name: mkjs-server
     ports:
       - "55555:55555"
+    volumes:
+      - ./server:/app/server
+      - ./game:/app/game
