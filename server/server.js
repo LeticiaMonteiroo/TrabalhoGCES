@@ -1,3 +1,28 @@
+const pool = require('./db');
+
+pool.query('SELECT NOW()', (err, result) => {
+  if (err) {
+    console.error('Erro ao conectar no banco:', err);
+  } else {
+    console.log('Banco conectado!');
+    console.log(result.rows[0]);
+  }
+});
+
+pool.query(`
+CREATE TABLE IF NOT EXISTS games (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+`, (err) => {
+    if (err) {
+        console.error('Erro criando tabela:', err);
+    } else {
+        console.log('Tabela games pronta!');
+    }
+});
+
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),

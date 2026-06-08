@@ -2,8 +2,33 @@ services:
   mkjs-server:
     build: .
     container_name: mkjs-server
+
     ports:
       - "55555:55555"
+
     volumes:
       - ./server:/app/server
       - ./game:/app/game
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+
+    environment:
+      POSTGRES_USER: mkjs
+      POSTGRES_PASSWORD: mkjs123
+      POSTGRES_DB: mkjsdb
+
+
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,3 +1,5 @@
+const pool = require('./db');
+
 var Messages = {
   EVENT: 'event',
   LIFE_UPDATE: 'life-update',
@@ -77,11 +79,25 @@ GameCollection.prototype.getGame = function (game) {
 };
 
 GameCollection.prototype.createGame = function (id) {
-  if (this._games[game]) {
+  if (this._games[id]) {
     return false;
   }
+
   var game = new Game(id, this);
   this._games[id] = game;
+
+  pool.query(
+    'INSERT INTO games(nome) VALUES($1)',
+    [id],
+    function (err) {
+      if (err) {
+        console.error('Erro salvando jogo:', err);
+      } else {
+        console.log('Jogo salvo no banco:', id);
+      }
+    }
+  );
+
   return true;
 };
 
