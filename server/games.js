@@ -86,17 +86,20 @@ GameCollection.prototype.createGame = function (id) {
   var game = new Game(id, this);
   this._games[id] = game;
 
-  pool.query(
-    'INSERT INTO games(nome) VALUES($1)',
-    [id],
-    function (err) {
-      if (err) {
-        console.error('Erro salvando jogo:', err);
-      } else {
-        console.log('Jogo salvo no banco:', id);
-      }
+pool.query(
+  'INSERT INTO games(nome) VALUES($1)',
+  [id],
+  function (err) {
+    if (err) {
+      console.error('Erro salvando jogo:', err);
+    } else {
+      console.log('======================');
+      console.log('JOGO SALVO NO BANCO');
+      console.log('Nome:', id);
+      console.log('======================');
     }
-  );
+  }
+);
 
   return true;
 };
