@@ -5,7 +5,8 @@
   "description": "Node.js server for mk.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon -L server.js"
+    "dev": "nodemon -L server.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "express": "3.x.x",
