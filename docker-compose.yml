@@ -1,14 +1,18 @@
 services:
-  mkjs-server:
-    build: .
-    container_name: mkjs-server
+
+  frontend:
+    build: ./game
+    container_name: mkjs-frontend
+
+    ports:
+      - "8080:80"
+
+  backend:
+    build: ./server
+    container_name: mkjs-backend
 
     ports:
       - "55555:55555"
-
-    volumes:
-      - ./server:/app/server
-      - ./game:/app/game
 
     depends_on:
       - postgres
@@ -21,8 +25,6 @@ services:
       POSTGRES_USER: mkjs
       POSTGRES_PASSWORD: mkjs123
       POSTGRES_DB: mkjsdb
-
-
 
     ports:
       - "5432:5432"
