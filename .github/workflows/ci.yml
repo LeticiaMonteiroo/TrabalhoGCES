@@ -24,7 +24,7 @@ jobs:
       - name: Instalar Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Instalar dependências
         run: npm install
@@ -34,3 +34,7 @@ jobs:
 
       - name: Executar testes
         run: npm test
+
+      - name: Auditoria de dependências
+        run: npm audit
+        continue-on-error: true
