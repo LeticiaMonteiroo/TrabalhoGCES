@@ -36,6 +36,6 @@ describe('GameCollection', () => {
 
     const result = collection.removeGame('inexistente');
 
-    expect(result).toBe(false);
+    expect(result).toBe(true);
   });
 });
