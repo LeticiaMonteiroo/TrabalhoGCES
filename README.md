@@ -1,33 +1,432 @@
-# Trabalho Individual - Gerência de Configuração e Evolução de Software (2026-1)
+# Trabalho Final - GCES
 
-Os conhecimentos de Gerência de Configuração e Evolução de Software (GCES) são fundamentais no ciclo de vida de um produto de software moderno. Este trabalho tem como objetivo exercitar os conceitos de automação, isolamento de ambiente, testes, segurança (DevSecOps) e deploy contínuo.
+## Integrante
 
-A aplicação base é o **mk.js**, um jogo de luta implementado com Backend em Node.js/Express e Frontend em HTML5 Canvas/JavaScript. O projeto original é considerado *deprecated* e possui dependências antigas; parte do desafio é modernizar o ambiente para que ele execute com versões estáveis atuais.
+- Letícia da Silva Monteiro
 
-## Requisitos do Projeto
+---
 
-O trabalho está dividido em 10 etapas, cada uma valendo **1,0 ponto**. O foco é a implementação técnica aliada à correta documentação e histórico de commits.
+# Objetivo
 
-### Critérios de Avaliação (10 Fases)
+O projeto consiste em uma aplicação web baseada no jogo MK.js, contendo um frontend responsável pela interface do jogo e um backend Node.js responsável pelo gerenciamento das partidas.
 
-| Fase | Descrição Técnica | Nota por etapa |
-|---|---|---|
-| 1. **Containerização (DEV)** | Elaboração de `Dockerfile` para ambiente de desenvolvimento com suporte a hot-reload (mudanças no código refletidas imediatamente no container). | 0-10% |
-| 2. **Docker Compose (DEV)** | Configuração de um `docker-compose.yml` que integre a aplicação e um banco de dados **Postgres**. Você deve implementar uma camada simples de persistência no código (ex: salvar histórico de lutas ou nomes de jogadores). | 10% - 20% |
-| 3. **CI - Build & Lint** | Automação das etapas de Build e Lint (Front e Back) via GitHub Actions. O pipeline deve falhar se o lint encontrar erros. | 20% - 30% |
-| 4. **CI - Testes Unitários** | Implementação de testes unitários funcionais. **Obrigatório:** Commits sequenciais demonstrando o teste quebrando no CI e, em seguida, passando após correção. | 30% - 40% |
-| 5. **CI - Testes de Fuzzing** | Implementação de testes de Fuzzing para validar a resiliência das entradas do servidor (Back-end) contra dados inesperados. | 40% - 50% |
-| 6. **Segurança - SAST & SCA** | Integração de ferramentas de análise estática de segurança (SAST) e verificação de vulnerabilidades em dependências (SCA - ex: Snyk ou npm audit). | 50% - 60% |
-| 7. **Qualidade de Código** | Integração completa com o **SonarCloud** no pipeline de CI, garantindo métricas de qualidade e cobertura mínima. | 60% - 70% |
-| 8. **Containerização (PROD)** | Elaboração de `Dockerfiles` otimizados para produção (multi-stage build, baseados em Alpine) e configuração do **Nginx** como servidor de arquivos estáticos. | 70% - 80% | 
-| 9. **Infraestrutura (K8s & Terraform)** | Criação de manifestos de **Kubernetes (K8s)** para orquestração da aplicação. Opcionalmente, utilize **Terraform** para provisionar a infraestrutura necessária. | 80% - 90% |
-| 10. **CD & Segurança de Rede** | Deploy Contínuo com publicação de imagens e configuração de **HTTPS via Cert Manager**. O Nginx deve redirecionar porta 80 para 443 e não expor outras portas para fora da rede de containers. | 90% - 100% |
+O foco deste trabalho foi aplicar conceitos de Gerência de Configuração e Evolução de Software, incluindo automação de processos, testes, análise de qualidade, segurança, containerização e infraestrutura.
 
-## Orientações Gerais
+---
 
-*   **Repositório:** O trabalho deve ser desenvolvido em um repositório pessoal no GitHub.
-*   **Commits:** Devem ser atômicos e espaçados no tempo. Commits realizados todos juntos na data de entrega serão penalizados.
-*   **Modernização:** É responsabilidade do aluno atualizar o `package.json` e as dependências do servidor para garantir compatibilidade com as versões mais recentes do Node.js.
-*   **Documentação:** O `README.md` final deve conter o passo a passo de como subir o ambiente de desenvolvimento e como visualizar o ambiente de produção.
+# Tecnologias Utilizadas
 
-Boa sorte!
+- Node.js
+- Express
+- PostgreSQL
+- Docker
+- Docker Compose
+- Kubernetes
+- Nginx
+- GitHub Actions
+- Jest
+- Fast-Check
+- ESLint
+- CodeQL
+- SonarCloud
+
+---
+
+# Arquitetura
+
+A aplicação é composta pelos seguintes componentes:
+
+- Frontend estático
+- Backend Node.js
+- Banco PostgreSQL
+- Nginx para servir arquivos estáticos
+- Docker para empacotamento
+- Kubernetes para orquestração
+- GitHub Actions para automação
+
+Fluxo simplificado:
+
+```text
+Usuário
+   │
+   ▼
+ Nginx
+   │
+   ▼
+Backend Node.js
+   │
+   ▼
+PostgreSQL
+```
+
+---
+
+# Estrutura do Projeto
+
+```text
+.
+├── game/
+├── server/
+├── k8s/
+├── .github/workflows/
+├── Dockerfile
+├── docker-compose.yml
+├── sonar-project.properties
+└── README.md
+```
+
+---
+
+# Execução Local
+
+## Backend
+
+Entrar na pasta do servidor:
+
+```bash
+cd server
+```
+
+Instalar dependências:
+
+```bash
+npm install
+```
+
+Executar aplicação:
+
+```bash
+npm start
+```
+
+---
+
+# Execução com Docker
+
+Construir as imagens:
+
+```bash
+docker compose build
+```
+
+Subir os containers:
+
+```bash
+docker compose up
+```
+
+Encerrar os containers:
+
+```bash
+docker compose down
+```
+
+---
+
+# Testes
+
+Executar os testes unitários:
+
+```bash
+cd server
+npm test
+```
+
+Arquivos de teste:
+
+```text
+server/tests/games.test.js
+server/tests/fuzzing.test.js
+```
+
+Ferramentas utilizadas:
+
+- Jest
+- Fast-Check
+
+---
+
+# Análise de Código (Lint)
+
+Executar:
+
+```bash
+cd server
+npm run lint
+```
+
+O projeto utiliza ESLint para análise estática e padronização de código.
+
+---
+
+# Integração Contínua (CI)
+
+Workflow:
+
+```text
+.github/workflows/ci.yml
+```
+
+A pipeline executa automaticamente:
+
+- Instalação de dependências
+- Verificação de estilo de código (Lint)
+- Testes unitários
+- Auditoria de dependências
+
+---
+
+# Segurança
+
+## SAST (Static Application Security Testing)
+
+Ferramenta utilizada:
+
+- GitHub CodeQL
+
+Workflow:
+
+```text
+.github/workflows/codeql.yml
+```
+
+O CodeQL realiza análise estática do código-fonte em busca de possíveis vulnerabilidades de segurança.
+
+---
+
+## SCA (Software Composition Analysis)
+
+Ferramenta utilizada:
+
+```bash
+npm audit
+```
+
+Workflow:
+
+```text
+.github/workflows/ci.yml
+```
+
+Etapa executada:
+
+```yaml
+- name: Auditoria de dependências
+  run: npm audit
+  continue-on-error: true
+```
+
+A auditoria identifica vulnerabilidades conhecidas em dependências utilizadas pelo projeto.
+
+---
+
+# SonarCloud
+
+O projeto possui integração com o SonarCloud para monitoramento contínuo da qualidade do código.
+
+Arquivos:
+
+```text
+sonar-project.properties
+.github/workflows/build.yml
+```
+
+Métricas avaliadas:
+
+- Bugs
+- Vulnerabilidades
+- Code Smells
+- Security Hotspots
+- Maintainability
+- Reliability
+
+---
+
+# Containerização
+
+## Docker
+
+Arquivos:
+
+```text
+Dockerfile
+docker-compose.yml
+```
+
+A aplicação é executada em containers independentes para:
+
+- Frontend
+- Backend
+- PostgreSQL
+
+---
+
+## Nginx
+
+O frontend é servido através do Nginx.
+
+Responsabilidades:
+
+- Servir arquivos estáticos
+- Ponto de entrada da aplicação
+- Integração com Kubernetes Ingress
+
+---
+
+# Kubernetes
+
+Manifestos disponíveis em:
+
+```text
+k8s/
+```
+
+Arquivos:
+
+```text
+backend-deployment.yaml
+backend-service.yaml
+frontend-service.yaml
+postgres-deployment.yaml
+postgres-service.yaml
+ingress.yaml
+certificate.yaml
+```
+
+Aplicação dos recursos:
+
+```bash
+kubectl apply -f k8s/
+```
+
+---
+
+# HTTPS e Segurança de Rede
+
+O projeto contém configuração para:
+
+- Cert-Manager
+- TLS
+- Ingress Nginx
+- Redirecionamento HTTPS
+
+Arquivos:
+
+```text
+k8s/ingress.yaml
+k8s/certificate.yaml
+```
+
+Configuração presente no Ingress:
+
+```yaml
+annotations:
+  cert-manager.io/cluster-issuer: letsencrypt-prod
+  nginx.ingress.kubernetes.io/ssl-redirect: "true"
+```
+
+---
+
+# Publicação de Imagens
+
+Workflow:
+
+```text
+.github/workflows/docker-publish.yml
+```
+
+Responsável por:
+
+- Construção automática das imagens Docker
+- Publicação no GitHub Container Registry (GHCR)
+
+---
+
+# Guia de Validação
+
+## Executar testes
+
+```bash
+cd server
+npm test
+```
+
+Resultado esperado:
+
+- Todos os testes aprovados.
+
+## Executar lint
+
+```bash
+npm run lint
+```
+
+Resultado esperado:
+
+- Nenhum erro encontrado.
+
+## Executar auditoria de dependências
+
+```bash
+npm audit
+```
+
+Resultado esperado:
+
+- Relatório de vulnerabilidades das dependências.
+
+## Verificar GitHub Actions
+
+Acessar:
+
+```text
+GitHub → Actions
+```
+
+Verificar execução dos workflows:
+
+- CI
+- CodeQL
+- SonarCloud
+- Docker Publish
+
+## Verificar SonarCloud
+
+Acessar o painel SonarCloud do projeto para visualizar:
+
+- Bugs
+- Vulnerabilidades
+- Code Smells
+- Security Hotspots
+
+---
+
+# Atendimento aos Critérios da Disciplina
+
+| Critério | Implementação |
+|-----------|--------------|
+| Controle de Versão | Git + GitHub |
+| Integração Contínua | GitHub Actions |
+| Testes Unitários | Jest |
+| Fuzz Testing | Fast-Check |
+| Análise Estática (SAST) | CodeQL |
+| Dependências (SCA) | npm audit |
+| Qualidade Contínua | SonarCloud |
+| Containerização | Docker |
+| Servidor Web | Nginx |
+| Orquestração | Kubernetes |
+| HTTPS | Cert-Manager |
+| Publicação de Imagens | GitHub Container Registry |
+
+---
+
+# Repositório Alternativo 
+
+Gitlab:
+
+https://gitlab.com/unb-esw/gces/gces2026-1/trabalho-final-gces-leticia-monteiro
+
+
+# Considerações Finais
+
+Este projeto demonstra a aplicação prática dos principais conceitos estudados na disciplina de Gerência de Configuração e Evolução de Software, incluindo automação, qualidade contínua, segurança, testes, containerização e infraestrutura moderna baseada em containers.
